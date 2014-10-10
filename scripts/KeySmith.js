@@ -3,21 +3,17 @@
 //---------------------------
 
 var KeySmith = function()
-{
-    //keeps track of previous key events
-    //stores KeyEvent (keyName, eventType, timestamp)
-    this.eventLog = []; //used like queue (pop => enqueue, shift = dequeue)
-    
-    //clear after 30 events
-    //will likely change later to time based
-    this.eventLogMaximum = 30;
-    
+{    
     //"dictionary:" Key Code => Key Alias
     this.keyAliasLookup = {};
     
     //"dictionary:" Key Alias => Key Code
     //Needed for smoother deletes
     this.keyCodeLookup = {};
+    
+    addEventListener("keydown", this.onKeyDown);
+    addEventListener("keyup", this.onKeyUp);
+    addEventListener("keypress", this.onKeyPress);
 }
 
 KeySmith.prototype.registerKey = function(keyName, keyCode)
@@ -37,6 +33,21 @@ KeySmith.prototype.deregisterKey = function(keyName)
     
     keyAliasLookup[keyCode] = undefined;
     keyCodeLookup[keyName] = undefined;
+}
+
+KeySmith.prototype.onKeyDown = function(event)
+{
+    console.log("Key Down", event.keyCode);
+}
+
+KeySmith.prototype.onKeyUp = function(event)
+{
+    console.log("Key Up", event.keyCode);
+}
+
+KeySmith.prototype.onKeyPress = function(event)
+{
+    console.log("Key Press", event.keyCode);
 }
 
 KeySmith.event = {};
