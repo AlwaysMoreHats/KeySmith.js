@@ -6,12 +6,27 @@
     <script>
         function go()
         {
-            console.log(KeySmith.event.KEY_DOWN);
-            console.log(KeySmith.event.KEY_UP);
-            console.log(KeySmith.event.KEY_PRESS);
+            ks.registerKey("action", 65); //a
+            
+            addEventListener(KeySmith.event.KEY_PRESS, ksPress);
+            addEventListener(KeySmith.event.KEY_DOWN, ksDown);
+            addEventListener(KeySmith.event.KEY_UP, ksUp);
         }
         
-        var ks = new KeySmith();
+        function ksPress(event)
+        {
+            console.log("KeySmith Press", event.keyName, event.keyCode);
+        }
+        
+        function ksDown(event)
+        {
+            console.log("KeySmith Down", event.keyName, event.keyCode);
+        }
+        
+        function ksUp(event)
+        {
+            console.log("KeySmith Up", event.keyName, event.keyCode);
+        }
     </script>
 </head>
 <body onload="go()">

@@ -1,15 +1,94 @@
-//---------------------------
-// KeySmith Class
-//---------------------------
+///////////////////
+// KeySmith Class//
+///////////////////
 
 var KeySmith = function()
 {    
+    //Because JavaScript scoping with event handlers.
+    var self = this;
+    
     //"dictionary:" Key Code => Key Alias
     this.keyAliasLookup = {};
     
     //"dictionary:" Key Alias => Key Code
     //Needed for smoother deletes
     this.keyCodeLookup = {};
+    
+    ///////////////////////////
+    //Event handler functions//
+    ///////////////////////////
+    
+    this.onKeyDown = function(event)
+    {
+        var keyName = self.keyAliasLookup[event.keyCode];
+        
+        if(!keyName)
+        {
+            return;
+        }
+        
+        self.dispatchKeyEvent(KeySmith.event.KEY_DOWN, event, keyName);
+    }
+    
+    this.onKeyUp = function(event)
+    {
+        var keyName = self.keyAliasLookup[event.keyCode];
+        
+        if(!keyName)
+        {
+            return;
+        }
+        
+        self.dispatchKeyEvent(KeySmith.event.KEY_UP, event, keyName);
+    }
+    
+    this.onKeyPress = function(event)
+    {
+        var keyName = self.keyAliasLookup[event.keyCode];
+        
+        if(!keyName)
+        {
+            return;
+        }
+        
+        self.dispatchKeyEvent(KeySmith.event.KEY_PRESS, event, keyName);
+    }
+    
+    //common event dispatcher.
+    this.dispatchKeyEvent = function(eventName, event, keyName)
+    {
+        //code used from http://stackoverflow.com/questions/2490825/how-to-trigger-event-in-javascript
+        var newEvent;
+
+        if(document.createEvent)
+        {
+            newEvent = document.createEvent("HTMLEvents");
+            newEvent.initEvent(eventName, true, true);
+        }
+        else
+        {
+            newEvent = document.createEventObject();
+            newEvent.eventType = eventName;
+        }
+
+        newEvent.eventName = eventName;
+        newEvent.keyCode = event.keyCode;
+        newEvent.keyName = keyName;
+
+        if(!self.dispatcher)
+        {
+            self.dispatcher = document.getElementsByTagName('body')[0];
+        }
+        
+        if(document.createEvent)
+        {
+            self.dispatcher.dispatchEvent(newEvent);
+        }
+        else
+        {
+            self.dispatcher.fireEvent("on" + newEvent.eventType, newEvent);
+        }
+    }
     
     addEventListener("keydown", this.onKeyDown);
     addEventListener("keyup", this.onKeyUp);
@@ -31,36 +110,18 @@ KeySmith.prototype.deregisterKey = function(keyName)
         return;
     }
     
-    keyAliasLookup[keyCode] = undefined;
-    keyCodeLookup[keyName] = undefined;
+    this.keyAliasLookup[keyCode] = undefined;
+    this.keyCodeLookup[keyName] = undefined;
 }
 
-KeySmith.prototype.onKeyDown = function(event)
-{
-    console.log("Key Down", event.keyCode);
-}
-
-KeySmith.prototype.onKeyUp = function(event)
-{
-    console.log("Key Up", event.keyCode);
-}
-
-KeySmith.prototype.onKeyPress = function(event)
-{
-    console.log("Key Press", event.keyCode);
-}
+///////////////////
+//Event Constants//
+///////////////////
 
 KeySmith.event = {};
 
-KeySmith.event.KEY_DOWN = "onKeySmithDown";
-KeySmith.event.KEY_UP = "onKeySmithUp";
-KeySmith.event.KEY_PRESS = "onKeySmithPress";
+KeySmith.event.KEY_DOWN = "KeySmithDown";
+KeySmith.event.KEY_UP = "KeySmithUp";
+KeySmith.event.KEY_PRESS = "KeySmithPress";
 
-
-var KeyEvent = function (keySmithKey, event)
-{
-    this.keyName = keySmithKey;
-    this.keyCode = event.keyCode;
-    this.eventType = event.type;
-    this.timestamp = Date.now();
-}
+var ks = new KeySmith();
