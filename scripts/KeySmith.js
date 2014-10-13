@@ -1,8 +1,8 @@
-///////////////////
-// KeySmith Class//
-///////////////////
+//////////////////////////
+// KeySmithManager Class//
+//////////////////////////
 
-var KeySmith = function()
+var KeySmithManager = function()
 {    
     //Because JavaScript scoping with event handlers.
     var self = this;
@@ -95,13 +95,13 @@ var KeySmith = function()
     addEventListener("keypress", this.onKeyPress);
 }
 
-KeySmith.prototype.registerKey = function(keyName, keyCode)
+KeySmithManager.prototype.registerKey = function(keyName, keyCode)
 {
     this.keyAliasLookup[keyCode] = keyName;
     this.keyCodeLookup[keyName] = keyCode;
 }
 
-KeySmith.prototype.deregisterKey = function(keyName)
+KeySmithManager.prototype.deregisterKey = function(keyName)
 {
     var keyCode = this.keyCodeLookup[keyCode];
     
@@ -118,10 +118,11 @@ KeySmith.prototype.deregisterKey = function(keyName)
 //Event Constants//
 ///////////////////
 
-KeySmith.event = {};
+KeySmithManager.event = {};
 
-KeySmith.event.KEY_DOWN = "KeySmithDown";
-KeySmith.event.KEY_UP = "KeySmithUp";
-KeySmith.event.KEY_PRESS = "KeySmithPress";
+KeySmithManager.event.KEY_DOWN = "KeySmithDown";
+KeySmithManager.event.KEY_UP = "KeySmithUp";
+KeySmithManager.event.KEY_PRESS = "KeySmithPress";
 
-var ks = new KeySmith();
+var KeySmith = new KeySmithManager();
+var ks = KeySmith;
