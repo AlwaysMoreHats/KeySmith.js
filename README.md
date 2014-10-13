@@ -9,7 +9,7 @@ of the key codes. This allows you to very easily customize controls.
 Usage
 =====
 
-Use KeySmith (or ks) for all interactions with the manager.
+Use `KeySmith` (or `ks`) for all interactions with the manager.
 
 Key Registration
 ----------------
@@ -40,7 +40,6 @@ the predefined constants in `KeySmith.event`. Current events names are:
     KeySmith.event.KEY_UP
 
 KeySmith custom events currently include the `eventName`, `keyCode`, and `keyName`.
-
 
 Features
 ========
